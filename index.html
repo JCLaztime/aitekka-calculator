@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aitekka Калкулатор за раст</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafb;
+        }
+        .calculator-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .result-value {
+            color: #4263eb;
+            font-weight: bold;
+            font-size: 28px;
+        }
+        .result-card {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .time-saved {
+            background-color: #eef3ff;
+        }
+        .monthly-savings {
+            background-color: #e6f7ef;
+        }
+        .yearly-savings {
+            background-color: #fff4e5;
+        }
+        .roi {
+            background-color: #eef3ff;
+        }
+        .info-box {
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4263eb;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4263eb;
+            cursor: pointer;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            position: relative;
+            margin-top: 12px;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4263eb;
+            border-radius: 3px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        input[type="number"], input[type="email"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .btn-primary {
+            background-color: #4263eb;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .newsletter-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-indigo-600 mb-2">Aitekka</h1>
+            <h2 class="text-xl text-gray-600 mb-3">Калкулатор за раст со вештачка интелигенција</h2>
+            <p class="text-gray-500">Пресметајте колку време и пари можете да заштедите со имплементација на AI автоматизација</p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Left Column - Input fields -->
+            <div class="calculator-card md:w-1/2">
+                <h3 class="text-xl font-bold mb-6">Внесете ги вашите податоци</h3>
+                
+                <div class="mb-6">
+                    <label for="hourlyRate" class="block text-gray-700 mb-2">Стапка од час (€)</label>
+                    <input type="number" id="hourlyRate" value="20" min="1" class="input-field">
+                    <p class="text-sm text-gray-500 mt-1">Колку чини вашето време на час</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="hoursPerMonth" class="block text-gray-700 mb-2">Работни часови месечно</label>
+                    <input type="number" id="hoursPerMonth" value="160" min="1" class="input-field">
+                    <p class="text-sm text-gray-500 mt-1">Просечниот број на работни часови месечно</p>
+                </div>
+
+                <div class="mb-6">
+                    <label for="inefficiencyPercent" class="block text-gray-700 mb-2">Време потрошено на повторливи задачи (%)</label>
+                    <input type="range" id="inefficiencySlider" min="5" max="50" value="30" class="slider mb-2">
+                    <div class="flex justify-between text-sm text-gray-500 mb-2">
+                        <span>5%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                    </div>
+                    <div class="text-center mb-2"><span id="inefficiencyValue" class="font-medium">30%</span></div>
+                    <p class="text-sm text-gray-500">Колкав процент од вашето време се троши на задачи што можат да се автоматизираат</p>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="implementationCost" class="block text-gray-700 mb-2">Проценети трошоци за имплементација на AI (€)</label>
+                    <input type="number" id="implementationCost" value="2000" min="0" class="input-field">
+                    <p class="text-sm text-gray-500 mt-1">Еднократна инвестиција за имплементација на AI решение</p>
+                </div>
+            </div>
+            
+            <!-- Right Column - Results -->
+            <div class="md:w-1/2">
+                <div class="calculator-card">
+                    <h3 class="text-xl font-bold mb-6">Вашите потенцијални заштеди</h3>
+                    
+                    <!-- Time Saved -->
+                    <div class="result-card time-saved">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-clock text-blue-500"></i>
+                            </div>
+                            <span class="text-gray-600">Заштедено време месечно</span>
+                        </div>
+                        <div class="result-value" id="timeSaved">48 часови</div>
+                        <p class="text-sm text-gray-500 mt-1">Време што можете да го искористите за други активности</p>
+                        <div class="progress-bar mt-3">
+                            <div class="progress-fill" id="timeSavedBar" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monthly Savings -->
+                    <div class="result-card monthly-savings">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-euro-sign text-green-500"></i>
+                            </div>
+                            <span class="text-gray-600">Месечни заштеди</span>
+                        </div>
+                        <div class="result-value" id="monthlySavings">€960</div>
+                        <p class="text-sm text-gray-500 mt-1">Директни финансиски заштеди</p>
+                    </div>
+                    
+                    <!-- Yearly Savings -->
+                    <div class="result-card yearly-savings">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-calendar-alt text-yellow-500"></i>
+                            </div>
+                            <span class="text-gray-600">Годишни заштеди</span>
+                        </div>
+                        <div class="result-value" id="yearlySavings">€11520</div>
+                        <p class="text-sm text-gray-500 mt-1">Проекција на годишно ниво</p>
+                    </div>
+                    
+                    <!-- ROI -->
+                    <div class="result-card roi">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-chart-line text-blue-500"></i>
+                            </div>
+                            <span class="text-gray-600">Поврат на инвестицијата (ROI)</span>
+                        </div>
+                        <div class="result-value" id="roi">576%</div>
+                        <p class="text-sm text-gray-500 mt-1">Годишен поврат на инвестицијата</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Disclaimer about 70% efficiency -->
+        <div class="info-box">
+            <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <p class="text-gray-600">
+                    Пресметките се базирани на просечна ефикасност на AI автоматизација од 70%. Реалните резултати може да варираат во зависност од конкретните имплементации.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Newsletter section -->
+        <div class="newsletter-section">
+            <h3 class="text-xl font-bold mb-4 text-center">Останете информирани за новите можности со AI</h3>
+            <p class="text-gray-600 text-center mb-6">Пријавете се за нашиот билтен за да добивате совети и најнови информации за AI автоматизација</p>
+            
+            <div class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                <input type="email" placeholder="Вашата е-пошта" class="flex-grow">
+                <button class="btn-primary">Пријава</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const hourlyRateInput = document.getElementById('hourlyRate');
+        const hoursPerMonthInput = document.getElementById('hoursPerMonth');
+        const inefficiencySlider = document.getElementById('inefficiencySlider');
+        const inefficiencyValue = document.getElementById('inefficiencyValue');
+        const implementationCostInput = document.getElementById('implementationCost');
+        
+        const timeSavedOutput = document.getElementById('timeSaved');
+        const timeSavedBar = document.getElementById('timeSavedBar');
+        const monthlySavingsOutput = document.getElementById('monthlySavings');
+        const yearlySavingsOutput = document.getElementById('yearlySavings');
+        const roiOutput = document.getElementById('roi');
+        
+        // AI efficiency constant (70%)
+        const AI_EFFICIENCY = 0.7;
+        
+        // Update calculations when inputs change
+        function updateCalculations() {
+            const hourlyRate = parseFloat(hourlyRateInput.value) || 0;
+            const hoursPerMonth = parseFloat(hoursPerMonthInput.value) || 0;
+            const inefficiencyPercent = parseFloat(inefficiencySlider.value) / 100;
+            const implementationCost = parseFloat(implementationCostInput.value) || 0;
+            
+            // Calculate time saved monthly (in hours)
+            const timeSavedMonthly = hoursPerMonth * inefficiencyPercent * AI_EFFICIENCY;
+            
+            // Calculate monthly cost savings
+            const monthlySavings = timeSavedMonthly * hourlyRate;
+            
+            // Calculate yearly savings
+            const yearlySavings = monthlySavings * 12;
+            
+            // Calculate ROI
+            let roiValue = 0;
+            if (implementationCost > 0) {
+                roiValue = (yearlySavings / implementationCost) * 100;
+            }
+            
+            // Update output elements
+            timeSavedOutput.textContent = Math.round(timeSavedMonthly) + ' часови';
+            timeSavedBar.style.width = (inefficiencyPercent * 100) + '%';
+            monthlySavingsOutput.textContent = '€' + Math.round(monthlySavings);
+            yearlySavingsOutput.textContent = '€' + Math.round(yearlySavings);
+            roiOutput.textContent = Math.round(roiValue) + '%';
+        }
+        
+        // Update inefficiency value display when slider changes
+        inefficiencySlider.oninput = function() {
+            inefficiencyValue.textContent = this.value + '%';
+            updateCalculations();
+        };
+        
+        // Listen for input changes
+        hourlyRateInput.addEventListener('input', updateCalculations);
+        hoursPerMonthInput.addEventListener('input', updateCalculations);
+        implementationCostInput.addEventListener('input', updateCalculations);
+        
+        // Initialize calculations on page load
+        updateCalculations();
+    </script>
+</body>
+</html>
